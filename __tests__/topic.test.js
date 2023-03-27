@@ -25,10 +25,12 @@ const app = require("../app");
                 });
             })
         })
-        it("responds with a a 404,and invalid url ", () => {
+        it("status 404 - not a route/path ", () => {
             return request(app)
                 .get("/api/badroute")
-                .expect(404);
-                
-    })
-});
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.message).toBe("invalid url");
+                });
+})
+  });
