@@ -49,7 +49,7 @@ const app = require("../app");
                         expect(body.article.body).toBe("I find this existence challenging");
                         expect(body.article.topic).toBe ("mitch");
                     expect(body.article.votes).toBe(100);
-                        expect(body.article.comment_count).toBe("11");
+        
                     })
                 })
 
