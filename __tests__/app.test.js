@@ -104,4 +104,15 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
                     });
                 })
             });
-        });
+            test("status 200 - returns  articles in  descending order ", () => {
+                return request(app)
+                    .get("/api/articles")
+                    .expect(200)
+                    .then(({ body }) => {
+                       
+                        expect(body.articles).toBeSortedBy("created_at", {
+                            descending: true,
+                        });
+        })
+    })
+});

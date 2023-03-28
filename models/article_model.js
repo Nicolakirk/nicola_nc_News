@@ -27,7 +27,7 @@ exports.selectArticles = (id) => {
      LEFT JOIN comments 
      ON comments.article_id = articles.article_id
      GROUP BY articles.article_id
-     ORDER BY comment_count DESC;`, )
+     ORDER BY created_at DESC;`, )
        .then((result) => {
            return result.rows;
          })
