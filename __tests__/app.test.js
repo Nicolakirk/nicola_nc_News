@@ -42,14 +42,14 @@ const app = require("../app");
                 .get('/api/articles/1')
                 .expect(200)
                 .then(({ body }) => {
-                    expect(body.output.title).toBe(
+                    expect(body.article.title).toBe(
                        "Living in the shadow of a great man");
-                       expect(body.output.author).toBe ("butter_bridge");
-                        expect(body.output.article_id).toBe( 1);
-                        expect(body.output.body).toBe("I find this existence challenging");
-                        expect(body.output.topic).toBe ("mitch");
-                    expect(body.output.votes).toBe(100);
-                        expect(body.output.comment_count).toBe("11");
+                       expect(body.article.author).toBe ("butter_bridge");
+                        expect(body.article.article_id).toBe( 1);
+                        expect(body.article.body).toBe("I find this existence challenging");
+                        expect(body.article.topic).toBe ("mitch");
+                    expect(body.article.votes).toBe(100);
+                        expect(body.article.comment_count).toBe("11");
                     })
                 })
 
