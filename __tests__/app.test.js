@@ -7,6 +7,7 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 const app = require("../app");
+const { convertTimestampToDate } = require("../db/seeds/utils.js");
 
   describe("GET/api/topics", () => {
     test("status:200 - responds with an array of topics, with slug and description properties", () => {
@@ -37,18 +38,24 @@ const app = require("../app");
 
   
         describe("get/api/articles/:article id", () =>{
-        test("status 200 - returns an article object correctly based on id ", () => {
+        test("status 200 - returns an article object correctly based on an id ", () => {
             return request(app)
                 .get('/api/articles/1')
                 .expect(200)
                 .then(({ body }) => {
-                    expect(body.article.title).toBe(
-                       "Living in the shadow of a great man");
-                       expect(body.article.author).toBe ("butter_bridge");
-                        expect(body.article.article_id).toBe( 1);
-                        expect(body.article.body).toBe("I find this existence challenging");
-                        expect(body.article.topic).toBe ("mitch");
-                    expect(body.article.votes).toBe(100);
+                    const { article } = body;
+                    expect(article).toBeInstanceOf(Object);
+                    expect(article).toMatchObject({
+                       title: "Living in the shadow of a great man",
+                       author : "butter_bridge",
+                      article_id : 1,
+                        body:"I find this existence challenging",
+                      topic: "mitch",
+                    votes:100,
+                    created_at:expect.any(String),
+                    article_img_url:'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+
+                })
         
                     })
                 })
@@ -60,7 +67,7 @@ const app = require("../app");
                         .expect(404)
                         .then(({ body }) => {
                             expect(body).toEqual({msg :"Article can't be found"});
-                        });
+                        })
        test("status 400 - requests id that doesnt exist with string parameter/wrong data type", () => {
              return request(app)
              .get("/api/articles/doesntexist")
@@ -69,6 +76,6 @@ const app = require("../app");
              expect(body).toEqual({ message: "invalid request" });
               });
 
-    })
+    });
 })
        });
