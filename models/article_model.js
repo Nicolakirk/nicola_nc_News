@@ -19,4 +19,17 @@ exports.selectArticles = (id) => {
       
            
 
-          // 
+    exports.selectAllArticles = () =>{
+      
+      return db.query ( `SELECT articles.* , COUNT (articles.article_id) AS comment_count
+      FROM articles
+     
+     LEFT JOIN comments 
+     ON comments.article_id = articles.article_id
+     GROUP BY articles.article_id
+     ORDER BY comment_count DESC;`, )
+       .then((result) => {
+           return result.rows;
+         })
+       };
+     

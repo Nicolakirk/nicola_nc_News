@@ -59,15 +59,17 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
         
                     })
                 })
+                })
 
 
-                it("status 404 -  article id doesn't exist", () => {
+                test("status 404 -  article id doesn't exist", () => {
                     return request(app)
                         .get("/api/articles/2005")
                         .expect(404)
                         .then(({ body }) => {
                             expect(body).toEqual({msg :"Article can't be found"});
                         })
+                    })
        test("status 400 - requests id that doesnt exist with string parameter/wrong data type", () => {
              return request(app)
              .get("/api/articles/doesntexist")
@@ -77,5 +79,29 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
               });
 
     });
-})
-       });
+
+       describe("GET/api/articles", () => {
+        test("status:200 - responds with an array of articles, with the correct properties", () => {
+            return request(app)
+                .get("/api/articles")
+                .expect(200)
+                .then(({ body }) => {
+                    const { articles } = body;
+                    
+                    expect(articles).toBeInstanceOf(Array);
+                    expect(articles).toHaveLength(12);
+                    articles.forEach((article) => {
+                       
+                        expect(article).toMatchObject({
+                            author: expect.any(String),
+                            article_id:expect.any(Number),
+                            topic : expect.any(String),
+                            created_at: expect.any(String),
+                            votes: expect.any(Number),
+                            article_img_url : expect.any(String),
+                            comment_count : expect.any(String),
+                        });
+                    });
+                })
+            });
+        });
