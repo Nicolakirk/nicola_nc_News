@@ -135,7 +135,7 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
                             created_at: expect.any(String),
                              author: expect.any(String),
                            body: expect.any(String),
-                           article_id:expect.any(Number),
+                           article_id:1,
                            
                         });
                     });
@@ -170,6 +170,15 @@ test("status 200 - returns the comments in  descending order ", () => {
             .then(({ body }) => {
              expect(body).toEqual({ msg: "Article id not found" });
               });
+            });
+              test("psql error - responds with an error message when an invalid article id is entered", () => {
+                return request(app)
+                    .get("/api/articles/hello/comments")
+                    expect(404)
+                .then(({ body }) => {
+                 expect(body).toEqual({  msg: err.msg} );
+                  });
 });
+
 
 
