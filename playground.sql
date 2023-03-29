@@ -1,7 +1,10 @@
 \c nc_news
-CREATE TABLE author_comments(
-    author_id INT REFEREENCES comments(author_id),
-    topic_
 
-)
+SELECT articles.article_id , COUNT (articles.article_id) AS comment_count
+ FROM articles
+
+LEFT JOIN comments 
+ON comments.article_id = articles.article_id
+GROUP BY articles.article_id
+ORDER BY comment_count DESC;
 
