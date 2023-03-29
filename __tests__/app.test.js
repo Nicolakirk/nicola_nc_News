@@ -80,6 +80,7 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
 
     });
 
+
        describe("GET/api/articles", () => {
         test("status:200 - responds with an array of articles, with the correct properties", () => {
             return request(app)
@@ -104,6 +105,7 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
                     });
                 })
             });
+        });
             test("status 200 - returns the articles in  descending order ", () => {
                 return request(app)
                     .get("/api/articles")
@@ -115,4 +117,68 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
                         });
         })
     })
+    describe("GET/api/articles/:article_id/comments", () => {
+        test("status:200 - responds with an array of comments for the given article id, with the correct properties", () => {
+            return request(app)
+                .get("/api/articles/1/comments")
+                .expect(200)
+                .then(({ body }) => {
+                    const { comments } = body;
+                    
+                    expect(comments).toBeInstanceOf(Array);
+                    expect(comments).toHaveLength(11);
+                    comments.forEach((comment) => {
+                       
+                        expect(comment).toMatchObject({
+                            comment_id: expect.any(Number),
+                            votes: expect.any(Number),
+                            created_at: expect.any(String),
+                             author: expect.any(String),
+                           body: expect.any(String),
+                           article_id:1,
+                           
+                        });
+                    });
+                });
+            });
+                });
+test("status 200 - returns the comments in  descending order ", () => {
+    return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+           
+            expect(body.comments).toBeSortedBy("created_at", {
+                descending: true,
+            });
+    });
 });
+
+    test("status 200 - responds with an empty array when queried by an article id that does exist but has no comments", () => {
+        return request(app)
+            .get("/api/articles/2/comments")
+            .expect(200)
+            .then(({ body }) => {
+               
+                expect(body.comments).toEqual([]);
+        });
+    });
+        test("status 404 - responds with an error message when article id doesn't exist", () => {
+            return request(app)
+                .get("/api/articles/2002/comments")
+                expect(404)
+            .then(({ body }) => {
+             expect(body).toEqual({ msg: "Article id not found" });
+              });
+            });
+              test(" responds with an error message when  the woring input is entered", () => {
+                return request(app)
+                    .get("/api/articles/hello/comments")
+                    expect(400)
+                .then(({ body }) => {
+                 expect(body).toEqual({  msg: err.msg} );
+                  });
+});
+
+
+
