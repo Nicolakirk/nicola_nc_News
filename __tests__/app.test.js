@@ -174,7 +174,7 @@ test("status 200 - returns the comments in  descending order ", () => {
               test(" responds with an error message when  the woring input is entered", () => {
                 return request(app)
                     .get("/api/articles/hello/comments")
-                    expect(404)
+                    expect(400)
                 .then(({ body }) => {
                  expect(body).toEqual({  msg: err.msg} );
                   });
