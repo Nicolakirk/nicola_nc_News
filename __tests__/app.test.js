@@ -171,7 +171,7 @@ test("status 200 - returns the comments in  descending order ", () => {
              expect(body).toEqual({ msg: "Article id not found" });
               });
             });
-              test(" responds with an error message when an invalid article id is entered", () => {
+              test(" responds with an error message when  the woring input is entered", () => {
                 return request(app)
                     .get("/api/articles/hello/comments")
                     expect(404)
