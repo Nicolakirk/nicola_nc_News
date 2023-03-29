@@ -21,7 +21,7 @@ exports.selectArticles = (id) => {
 
     exports.selectAllArticles = () =>{
       
-      return db.query ( `SELECT articles.* , COUNT (articles.article_id) AS comment_count
+      return db.query ( `SELECT articles.* , CAST (COUNT (articles.article_id) AS INT) AS comment_count
       FROM articles
      
      LEFT JOIN comments 
