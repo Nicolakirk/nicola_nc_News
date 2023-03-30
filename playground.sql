@@ -1,7 +1,7 @@
 \c nc_news
-INSERT INTO comments
-    ( article_id, author, body)
-    VALUES
-    (1,'jessjelly','this is waht i want to say');
-SELECT * FROM comments WHERE author= 'jessjelly';
+FROM users
+JOIN comments
+AT comments_author = users.username
+SELECT * FROM users 
+WHERE username = 'jessjelly';
 

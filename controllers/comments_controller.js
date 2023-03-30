@@ -1,4 +1,4 @@
-const { selectComments, checkArticleIdExists, insertComments } = require("../models/comments_model")
+const { selectComments, checkArticleIdExists, insertComments, checkUserExists } = require("../models/comments_model")
 
 
 
@@ -20,10 +20,10 @@ exports.postComments = (req, res, next)=>{
     const commentBody =  req.body;
     
 
-insertComments(  article_id, commentBody)
-.then ((comment)=>{
-   
-    res.status(201).send({comment: comment})
+const commentsPromises = [insertComments(  article_id, commentBody)];
+Promise.all(commentsPromises)
+.then (([comment])=>{
+    res.status(201).send({ comment })
 })
 .catch((err)=>{
     next( err);
