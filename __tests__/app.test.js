@@ -258,7 +258,7 @@ test("status 201 - extra keys on the post object ", () => {
             })
         });
     });
-        test("status 400 - not existing username ", () => {
+        test("status 404 - not existing username ", () => {
             const inputComment = {
                 username: "notauser",
                 body: "This is what I want to write",
@@ -267,13 +267,13 @@ test("status 201 - extra keys on the post object ", () => {
             return request(app)
                 .post("/api/articles/1/comments")
                 .send(inputComment)
-                .expect(400)
+                .expect(404)
                 .then(({ body }) => {
-                    expect(body.message).toBe("Bad request");
+                    expect(body.message).toBe("not found");
                 });
 });
 
-test.only("status 404 - responds with an error message when article id doesn't exist", () => {
+test("status 404 - responds with an error message when article id doesn't exist", () => {
     
     const inputComment = {
         username: 'rogersop',
