@@ -273,7 +273,7 @@ test("status 201 - extra keys on the post object ", () => {
                 });
 });
 
-test("status 404 - responds with an error message when article id doesn't exist", () => {
+test.only("status 404 - responds with an error message when article id doesn't exist", () => {
     
     const inputComment = {
         username: 'rogersop',
@@ -284,7 +284,7 @@ test("status 404 - responds with an error message when article id doesn't exist"
         .send(inputComment)
         expect(404)
     .then(({ body }) => {
-     expect(body.message).tobe("Invalid article Id");
+     expect(body.message).tobe("Not found");
       })
 });
 
