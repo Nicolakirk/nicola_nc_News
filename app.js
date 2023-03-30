@@ -3,7 +3,10 @@ const app = express();
 const { getTopics } = require("./controllers/topic_controller");
 const{ getArticles, getAllArticles} = require("./controllers/article_controller")
 const { handleCustomErrors, badRoute} = require("./controllers/error_controllers");
-const { getComments } = require("./controllers/comments_controller");
+const { getComments, postComments } = require("./controllers/comments_controller");
+
+app.use(express.json());
+
 
 
 
@@ -14,6 +17,8 @@ const { getComments } = require("./controllers/comments_controller");
 
   app.get('/api/articles/:article_id/comments', getComments);
   
+
+  app.post('/api/articles/:article_id/comments', postComments);
 
 
 

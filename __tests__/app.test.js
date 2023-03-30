@@ -179,6 +179,32 @@ test("status 200 - returns the comments in  descending order ", () => {
                  expect(body).toEqual({  msg: err.msg} );
                   });
 });
+describe("POST /api/articles/:article_id/comments test ", ()=>{
+    test("201, post request, adds a comment, to the article id entered, and returns the posted comment", ()=>{
+        const inputComment = {
+            username: 'rogersop',
+            body: 'This is what I want to write.', 
+            }
+            return request(app)
+        .post("/api/articles/1/comments")
+        .send(inputComment)
+        .expect(201)
+        .then(( { body } )=>{
+            const { comment } = body;
+            expect(comment).toBeInstanceOf(Object)
+            expect(comment).toMatchObject({
+                comment_id: expect.any(Number),
+                votes: 0,
+                created_at: expect.any(String),
+                author: 'rogersop',
+               body: "This is what I want to write.",
+               article_id: 1,
+            })
+        })
+    })
+
+    });
+
 
 
 
