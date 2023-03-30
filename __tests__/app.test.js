@@ -31,7 +31,7 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
                 .get("/api/badroute")
                 .expect(404)
                 .then(({ body }) => {
-                    expect(body.message).toBe("Not found");
+                    expect(body.message).toBe("Bad request");
                 });
 })
   });
@@ -205,7 +205,7 @@ describe("POST /api/articles/:article_id/comments test ", ()=>{
     })
     test("status 400 - missing values on post username ", () => {
         const inputComment = {
-            username: "",
+           
             body: "This is what I want to write",
         };
         return request(app)
@@ -213,15 +213,15 @@ describe("POST /api/articles/:article_id/comments test ", ()=>{
             .send(inputComment)
             .expect(400)
             .then(({ body }) => {
-                expect(body.msg).toBe("invalid input");
+                expect(body.msg).toBe("Not found");
             });
 
 
     });
-    test("status 400 - missing values on post body ", () => {
+    test("status 400 - missing key on post body ", () => {
         const inputComment = {
             username: "rogersop",
-            body: "",
+            
         };
         return request(app)
             .post("/api/articles/1/comments")
@@ -232,23 +232,33 @@ describe("POST /api/articles/:article_id/comments test ", ()=>{
             });
 });
 
-test("status 404 - extra keys on the post object ", () => {
+test("status 201 - extra keys on the post object ", () => {
     const inputComment = {
         username: "rogersop",
         title: "Title here",
-        body: "This is the body content",
-        topic: "cats",
+        body: "This is my message",
+        topic: "Wombats",
         votes: 100,
     };
     return request(app)
-        .post("/api/articles/1/coments")
+        .post("/api/articles/1/comments")
         .send(inputComment)
-        .expect(404)
+        .expect(201)
         .then(({ body }) => {
-            expect(body.message).toBe("Not found");
+                const { comment } = body;
+                expect(comment).toBeInstanceOf(Object)
+                expect(comment).toMatchObject({
+                    comment_id: expect.any(Number),
+                    votes: 0,
+                    created_at: expect.any(String),
+                    author: 'rogersop',
+                   body: "This is my message",
+                   article_id: 1,
+                })
+            })
         });
     });
-        test("status 404 - not existing username ", () => {
+        test("status 400 - not existing username ", () => {
             const inputComment = {
                 username: "notauser",
                 body: "This is what I want to write",
@@ -257,9 +267,9 @@ test("status 404 - extra keys on the post object ", () => {
             return request(app)
                 .post("/api/articles/1/comments")
                 .send(inputComment)
-                .expect(404)
+                .expect(400)
                 .then(({ body }) => {
-                    expect(body.message).toBe("Invalid content");
+                    expect(body.message).toBe("Bad request");
                 });
 });
 
@@ -278,4 +288,3 @@ test("status 404 - responds with an error message when article id doesn't exist"
       })
 });
 
-});

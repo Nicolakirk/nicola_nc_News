@@ -44,9 +44,9 @@ exports.insertComments = ( id, commentbody) => {
     const { article_id } = id
     const { username , body } = commentbody
    
-
+    
     if (username === undefined || username.length === 0 ) {
-        return Promise.reject({ status: 400, msg: "invalid input" });
+        return Promise.reject({ status: 400, msg: "Not found" });
     }
     if (body === undefined || body.length === 0 || typeof body !== "string") {
         return Promise.reject({ status: 400, msg: "invalid input" });
