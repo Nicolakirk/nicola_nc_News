@@ -31,7 +31,7 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
                 .get("/api/badroute")
                 .expect(404)
                 .then(({ body }) => {
-                    expect(body.message).toBe("invalid url");
+                    expect(body.message).toBe("Bad request");
                 });
 })
   });
@@ -171,14 +171,120 @@ test("status 200 - returns the comments in  descending order ", () => {
              expect(body).toEqual({ msg: "Article id not found" });
               });
             });
-              test(" responds with an error message when  the woring input is entered", () => {
+              test(" responds with an error message when  the wrong input is entered", () => {
                 return request(app)
                     .get("/api/articles/hello/comments")
                     expect(400)
                 .then(({ body }) => {
                  expect(body).toEqual({  msg: err.msg} );
                   });
+                
+});
+describe("POST /api/articles/:article_id/comments test ", ()=>{
+    test("201, post request, adds a comment, to the article id entered, and returns the posted comment", ()=>{
+        const inputComment = {
+            username: 'rogersop',
+            body: 'This is what I want to write.', 
+            }
+            return request(app)
+        .post("/api/articles/1/comments")
+        .send(inputComment)
+        .expect(201)
+        .then(( { body } )=>{
+            const { comment } = body;
+            expect(comment).toBeInstanceOf(Object)
+            expect(comment).toMatchObject({
+                comment_id: expect.any(Number),
+                votes: 0,
+                created_at: expect.any(String),
+                author: 'rogersop',
+               body: "This is what I want to write.",
+               article_id: 1,
+            })
+        })
+    })
+    test("status 400 - missing values on post username ", () => {
+        const inputComment = {
+           
+            body: "This is what I want to write",
+        };
+        return request(app)
+            .post("/api/articles/1/comments")
+            .send(inputComment)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Not found");
+            });
+
+
+    });
+    test("status 400 - missing key on post body ", () => {
+        const inputComment = {
+            username: "rogersop",
+            
+        };
+        return request(app)
+            .post("/api/articles/1/comments")
+            .send(inputComment)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("invalid input");
+            });
 });
 
+test("status 201 - extra keys on the post object ", () => {
+    const inputComment = {
+        username: "rogersop",
+        title: "Title here",
+        body: "This is my message",
+        topic: "Wombats",
+        votes: 100,
+    };
+    return request(app)
+        .post("/api/articles/1/comments")
+        .send(inputComment)
+        .expect(201)
+        .then(({ body }) => {
+                const { comment } = body;
+                expect(comment).toBeInstanceOf(Object)
+                expect(comment).toMatchObject({
+                    comment_id: expect.any(Number),
+                    votes: 0,
+                    created_at: expect.any(String),
+                    author: 'rogersop',
+                   body: "This is my message",
+                   article_id: 1,
+                })
+            })
+        });
+    });
+        test("status 404 - not existing username ", () => {
+            const inputComment = {
+                username: "notauser",
+                body: "This is what I want to write",
+              
+            };
+            return request(app)
+                .post("/api/articles/1/comments")
+                .send(inputComment)
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.message).toBe("not found");
+                });
+});
 
+test("status 404 - responds with an error message when article id doesn't exist", () => {
+    
+    const inputComment = {
+        username: 'rogersop',
+        body: 'This is what I want to write.', 
+        }
+        return request(app)
+        .post("/api/articles/2002/comments")
+        .send(inputComment)
+        expect(404)
+    .then(({ body }) => {
+     expect(body.message).tobe("Not found");
+      })
+});
 

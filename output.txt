@@ -1,41 +1,41 @@
 You are now connected to database "nc_news" as user "nicolakirk".
- article_id | comment_count 
-------------+---------------
-         16 |            16
-         23 |            14
-         35 |            14
-         19 |            13
-         27 |            13
-         17 |            12
-         31 |            12
-         34 |            11
-         26 |            11
-          6 |            11
-          3 |            10
-         29 |            10
-          4 |             9
-         22 |             8
-         10 |             8
-          7 |             8
-          1 |             8
-         18 |             8
-          9 |             8
-         30 |             8
-         21 |             8
-          8 |             7
-         12 |             7
-         36 |             6
-         13 |             6
-         33 |             6
-          2 |             6
-          5 |             6
-         20 |             5
-         28 |             5
-         32 |             5
-         24 |             5
-         11 |             5
-         15 |             4
-         25 |             4
-         14 |             3
+ votes |                                         title                                         
+-------+---------------------------------------------------------------------------------------
+     0 | Running a Node App
+     0 | The Rise Of Thinking Machines: How IBM's Watson Takes On The World
+     0 | 22 Amazing open source React projects
+     0 | Making sense of Redux
+     0 | Please stop worrying about Angular 3
+     0 | JavaScript’s Apply, Call, and Bind Methods are Essential for JavaScript Professionals
+     0 | Using React Native: One Year Later
+     0 | Express.js: A Server-Side JavaScript Framework
+     0 | Learn HTML5, CSS3, and Responsive WebSite Design in One Go
+     0 | An Introduction to JavaScript Object Notation (JSON) in JavaScript and .NET
+     0 | Designing Better JavaScript APIs
+     0 | The battle for Node.js security has only begun
+     0 | What does Jose Mourinho's handwriting say about his personality?
+     0 | Who Will Manage Your Club in 2021?
+     0 | Why do England managers keep making the same mistakes?
+     0 | History of FC Barcelona
+     0 | Which current Premier League manager was the best player?
+     0 | The People Tracking Every Touch, Pass And Tackle in the World Cup
+     0 | Who are the most followed clubs and players on Instagram?
+     0 | History of Football
+     0 | Agility Training Drills For Football Players
+     0 | Defensive Metrics: Measuring the Intensity of a High Press
+     0 | Sunday league football
+     0 | Game of talents: management lessons from top football coaches
+     0 | Sweet potato & butternut squash soup with lemon & garlic toast
+     0 | HOW COOKING HAS CHANGED US
+     0 | Thanksgiving Drinks for Everyone
+     0 | High Altitude Cooking
+     0 | A BRIEF HISTORY OF FOOD—NO BIG DEAL
+     0 | Twice-Baked Butternut Squash Is the Thanksgiving Side Dish of Your Dreams
+     0 | What to Cook This Week
+     0 | Halal food: Keeping pure and true
+     0 | Seafood substitutions are increasing
+     0 | The Notorious MSG’s Unlikely Formula For Success
+     0 | Stone Soup
+     0 | The vegan carnivore?
 (36 rows)
 
