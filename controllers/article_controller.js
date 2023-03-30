@@ -1,4 +1,4 @@
-const { selectAllArticles } = require("../models/article_model");
+const { selectAllArticles, addVotesbyArticle } = require("../models/article_model");
 const { selectArticles, s } = require("../models/article_model");
 
 
@@ -22,3 +22,20 @@ const { selectArticles, s } = require("../models/article_model");
             next( err);
           });
         };
+
+        exports.patchVotesforComments = (req, res, next) =>{
+          
+          const  article_id = req.params;
+          const increment = req.body
+         
+
+const commentsPromises = [addVotesbyArticle(article_id, increment)];
+Promise.all(commentsPromises)
+.then(([article])=>{
+  res.status(201).send({ article})
+})
+.catch((err)=>{
+  next( err);
+});
+
+        }
