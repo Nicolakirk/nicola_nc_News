@@ -290,14 +290,14 @@ test("status 404 - responds with an error message when article id doesn't exist"
 });
 describe("PATCH /api/articles/:articleid request", () => {
     test("status 200 - increments votes correctly and returns the updated article ", () => {
-        const update = { votes: 20 };
+        const update = { inc_votes: 20 };
         return request(app)
             .patch("/api/articles/1")
             .send(update)
             .expect(201)
             .then(({ body }) => {
                const { article } = body;
-                console.log(article)
+                
                 expect(article).toMatchObject({
                     title: 'Living in the shadow of a great man',
                     topic: 'mitch',
@@ -323,13 +323,24 @@ describe("PATCH /api/articles/:articleid request", () => {
         });
         test("status 400 - responds with an error message when you enter a string instead of a number", () => {
     
-            const update = { votes: 20 };
+            const update = { inc_votes: "hi" };
                 return request(app)
-                .patch("/api/articles/2002")
+                .patch("/api/articles/1")
                 .send(update)
                 expect(400)
             .then(({ body }) => {
-             expect(body.message).tobe("bad request");
+             expect(body.message).toBe("bad request");
+              })
+        });
+        test("status 400 - responds with an error message when you enter an empty object", () => {
+    
+            const update = {  };
+                return request(app)
+                .patch("/api/articles/1")
+                .send(update)
+                expect(400)
+            .then(({ body }) => {
+             expect(body.message).toBe("bad request");
               })
         });
     })

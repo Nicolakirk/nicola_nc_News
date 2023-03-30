@@ -37,14 +37,14 @@ exports.selectArticles = (id) => {
        exports.addVotesbyArticle = (id, votes_id) =>{
        
         const { article_id } = id
-        const { votes} = votes_id
+        const { inc_votes} = votes_id
      
         const psqlQuery = `
         UPDATE articles 
         SET votes = votes + $2 
         WHERE article_id = $1
         RETURNING *;`
-        return db.query(psqlQuery,[ article_id, votes]).then((result)=>{
+        return db.query(psqlQuery,[ article_id, inc_votes]).then((result)=>{
    
  
           return result.rows[0];

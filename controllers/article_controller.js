@@ -13,10 +13,8 @@ const { selectArticles, s } = require("../models/article_model");
         };
 
         exports.getAllArticles = (req, res, next)=>{
-          
           selectAllArticles().then ((article) =>{
-           
-            res.status(200).send({articles: article});
+           res.status(200).send({articles: article});
           })
           .catch((err)=>{
             next( err);
@@ -27,11 +25,8 @@ const { selectArticles, s } = require("../models/article_model");
           
           const  article_id = req.params;
           const increment = req.body
-         
-
-const commentsPromises = [addVotesbyArticle(article_id, increment)];
-Promise.all(commentsPromises)
-.then(([article])=>{
+        addVotesbyArticle(article_id, increment)
+    .then((article)=>{
   res.status(201).send({ article})
 })
 .catch((err)=>{
