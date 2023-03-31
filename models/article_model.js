@@ -44,12 +44,34 @@ exports.selectArticles = (id) => {
         SET votes = votes + $2 
         WHERE article_id = $1
         RETURNING *;`
-        return db.query(psqlQuery,[ article_id, inc_votes]).then((result)=>{
-   
- 
-          return result.rows[0];
+        const firstPsqlQuery = `SELECT * from articles WHERE article_id =$1;`
+
+        if ( Object.keys(votes_id)=== 0){
+          return Promise.reject ({status:400, msg:"Bad Request"});
+        }
+        return db.query(firstPsqlQuery, [article_id])
+        .then((results)=>{
+          if (results.rows.length === 0){
+            return Promise.reject({
+              status :404, msg: "Not found"
+            });
+          }else {return db.query(psqlQuery,[ article_id, inc_votes] )}
+        }).then((results)=>{
+         
+          return results.rows[0]
         })
+      }
 
 
-       }
-     
+      //   return db.query(psqlQuery,[ article_id, inc_votes]).then((result)=>{
+      //     if (result.rows.length === 0) {
+      //       return Promise.reject({
+      //         status: 404,
+      //         msg: "Article can't be found",
+      //       });
+      //     } else {
+      //       return result.rows[0];
+  
+      //     }
+      //   });
+      // };
