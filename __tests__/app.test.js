@@ -273,6 +273,7 @@ test("status 201 - extra keys on the post object ", () => {
                 });
 });
 
+
 test("status 404 - responds with an error message when article id doesn't exist", () => {
     
     const inputComment = {
@@ -287,6 +288,7 @@ test("status 404 - responds with an error message when article id doesn't exist"
      expect(body.message).tobe("Not found");
       })
 });
+
 describe(". DELETE /api/comments/:comment_id",()=>{
     test("Status 204 ,deletes comment and returns 204 status, checks the array has removed one comment",()=>{
         return request(app)
@@ -314,3 +316,62 @@ describe(". DELETE /api/comments/:comment_id",()=>{
             
     })
     });
+
+describe("PATCH /api/articles/:articleid request", () => {
+    test("status 200 - increments votes correctly and returns the updated article ", () => {
+        const update = { inc_votes: 20 };
+        return request(app)
+            .patch("/api/articles/1")
+            .send(update)
+            .expect(201)
+            .then(({ body }) => {
+               const { article } = body;
+                
+                expect(article).toMatchObject({
+                    title: 'Living in the shadow of a great man',
+                    topic: 'mitch',
+                    author: 'butter_bridge',
+                    body: 'I find this existence challenging',
+                    votes: 120,
+                    article_img_url:
+                      'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                    created_at: expect.any(String),
+                });
+            })
+        })
+        test("status 404 - responds with an error message when article id doesn't exist", () => {
+    
+            const update = { votes: 20 };
+                return request(app)
+                .patch("/api/articles/2002")
+                .send(update)
+                expect(404)
+            .then(({ body }) => {
+             expect(body.message).tobe("Not found");
+              })
+        });
+        test("status 400 - responds with an error message when you enter a string instead of a number", () => {
+    
+            const update = { inc_votes: "hi" };
+                return request(app)
+                .patch("/api/articles/1")
+                .send(update)
+                expect(400)
+            .then(({ body }) => {
+             expect(body.message).toBe("bad request");
+              })
+        });
+        test("status 400 - responds with an error message when you enter an empty object", () => {
+    
+            const update = {  };
+                return request(app)
+                .patch("/api/articles/1")
+                .send(update)
+                expect(400)
+            .then(({ body }) => {
+             expect(body.message).toBe("bad request");
+              })
+        });
+    })
+
+
