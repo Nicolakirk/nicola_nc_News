@@ -283,9 +283,9 @@ test("status 404 - responds with an error message when article id doesn't exist"
         return request(app)
         .post("/api/articles/2002/comments")
         .send(inputComment)
-        expect(404)
+        .expect(404)
     .then(({ body }) => {
-     expect(body.message).tobe("Not found");
+     expect(body.message).toBe("not found");
       })
 });
 
@@ -293,7 +293,7 @@ describe(". DELETE /api/comments/:comment_id",()=>{
     test("Status 204 ,deletes comment and returns 204 status, checks the array has removed one comment",()=>{
         return request(app)
         .delete("/api/comments/1")
-        .expect(204) 
+        .expect(204);
             
     })
     test("Status 404  responds with an error message when comment id does not exist",()=>{
@@ -345,9 +345,9 @@ describe("PATCH /api/articles/:articleid request", () => {
                 return request(app)
                 .patch("/api/articles/2002")
                 .send(update)
-                expect(404)
+                .expect(404)
             .then(({ body }) => {
-             expect(body.message).tobe("Not found");
+             expect(body.msg).toBe("Not found");
               })
         });
         test("status 400 - responds with an error message when you enter a string instead of a number", () => {
@@ -356,20 +356,20 @@ describe("PATCH /api/articles/:articleid request", () => {
                 return request(app)
                 .patch("/api/articles/1")
                 .send(update)
-                expect(400)
+                .expect(400)
             .then(({ body }) => {
-             expect(body.message).toBe("bad request");
+             expect(body.msg).toBe("Bad Request");
               })
         });
         test("status 400 - responds with an error message when you enter an empty object", () => {
     
-            const update = {  };
+            const update = {};
                 return request(app)
                 .patch("/api/articles/1")
                 .send(update)
-                expect(400)
+                .expect(400)
             .then(({ body }) => {
-             expect(body.message).toBe("bad request");
+             expect(body.msg).toBe("Bad Request");
               })
         });
     })

@@ -67,23 +67,25 @@ exports.insertComments = ( id, commentbody) => {
     
       };
       exports.removeCommentsById = (id) =>{
-        const { comment_id } = id;
+      
         const psqlDeleteQuery = ` 
         DELETE FROM comments 
         WHERE comment_id = $1; `
        
-        const firstPsqlQuery = `SELECT * FROM comments WHERE comment_id = $1;`
-        
-        return db.query(firstPsqlQuery,[comment_id] )
+        const firstPsqlQuery = `SELECT * FROM comments WHERE comment_id = $1 ;`
+        console.log(id);
+        return db.query(firstPsqlQuery,[id] )
         .then((results) => {
+            console.log(results.rows);
             if (results.rows.length === 0){
                 return Promise.reject({ status: 404, msg: "Not found" });
-            } else { return db.query(psqlDeleteQuery, [comment_id])
+            } else { return db.query(psqlDeleteQuery, [id])
                 
             
             }}).then((results) =>{
     
-                return results.rows})
+                return results
+            })
             } 
         
     

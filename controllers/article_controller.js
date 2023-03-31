@@ -27,7 +27,8 @@ const { selectArticles, s } = require("../models/article_model");
           const increment = req.body
         addVotesbyArticle(article_id, increment)
     .then((article)=>{
-  res.status(201).send({ article})
+      
+  res.status(201).send({ article })
 })
 .catch((err)=>{
   next( err);
