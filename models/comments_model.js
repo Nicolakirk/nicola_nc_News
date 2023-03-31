@@ -44,7 +44,6 @@ exports.insertComments = ( id, commentbody) => {
     const { article_id } = id
     const { username , body } = commentbody
    
-    
     if (username === undefined || username.length === 0 ) {
         return Promise.reject({ status: 400, msg: "Not found" });
     }
@@ -66,4 +65,42 @@ exports.insertComments = ( id, commentbody) => {
                 return result.rows[0];
               })
     
-      }
+      };
+      exports.removeCommentsById = (id) =>{
+        const { comment_id } = id;
+        const psqlDeleteQuery = ` 
+        DELETE FROM comments 
+        WHERE comment_id = $1; `
+       
+        const firstPsqlQuery = `SELECT * FROM comments WHERE comment_id = $1;`
+        
+        return db.query(firstPsqlQuery,[comment_id] )
+        .then((results) => {
+            if (results.rows.length === 0){
+                return Promise.reject({ status: 404, msg: "Not found" });
+            } else { return db.query(psqlDeleteQuery, [comment_id])
+                
+            
+            }}).then((results) =>{
+    
+                return results.rows})
+            } 
+        
+    
+        
+
+
+
+                    
+        
+                   
+
+
+ 
+    
+    
+            
+
+     
+
+      
