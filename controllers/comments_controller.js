@@ -1,4 +1,4 @@
-const { selectComments, checkArticleIdExists, insertComments, checkUserExists } = require("../models/comments_model")
+const { selectComments, checkArticleIdExists, insertComments, checkUserExists, removeCommentById, selectAllcommnents, checkCommentExists } = require("../models/comments_model")
 
 
 
@@ -29,4 +29,27 @@ Promise.all(commentsPromises)
     next( err);
   });
 
+}
+
+exports.deleteComments = (req, res, next) =>{
+    const comments_id = req.params;
+
+  removeCommentById(comments_id)
+  .then (([comments])=>{
+        res.status(204).send({comments});
+    })
+    .catch((err)=>{
+        next(err);
+    })
+
+} ;
+
+exports.getAllComments = (req, res, next) =>{
+   
+    selectAllcommnents().then((comments) =>{
+        res.status(200).send({comments});
+    })
+    .catch((err)=>{
+        next(err);
+    })
 }

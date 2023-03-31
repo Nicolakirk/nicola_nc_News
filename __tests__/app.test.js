@@ -287,4 +287,30 @@ test("status 404 - responds with an error message when article id doesn't exist"
      expect(body.message).tobe("Not found");
       })
 });
-
+describe(". DELETE /api/comments/:comment_id",()=>{
+    test("Status 204 ,deletes comment and returns 204 status, checks the array has removed one comment",()=>{
+        return request(app)
+        .delete("/api/comments/1")
+        .expect(204) 
+            
+    })
+    test("Status 404  responds with an error message when comment id does not exist",()=>{
+        return request(app)
+        .delete("/api/comments/2005")
+        .expect(404) 
+        .then(({ body }) => {
+            expect(body.msg).toBe("Not found");
+             })
+            
+    })
+    
+    test("Status 400  responds with an error message when comment id is a string",()=>{
+        return request(app)
+        .delete("/api/comments/letters")
+        .expect(400) 
+        .then(({ body }) => {
+            expect(body.msg).toBe("Bad Request");
+             })
+            
+    })
+    });

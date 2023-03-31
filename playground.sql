@@ -1,3 +1,3 @@
 \c nc_news
-SELECT votes, title FROM articles;
-
+ DELETE FROM comments 
+        WHERE comment_id = 1;
