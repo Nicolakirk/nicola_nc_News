@@ -66,46 +66,41 @@ exports.insertComments = ( id, commentbody) => {
               })
     
       };
-      exports.removeCommentById = (id) =>{
+      exports.removeCommentsById = (id) =>{
         const { comment_id } = id;
         const psqlDeleteQuery = ` 
         DELETE FROM comments 
         WHERE comment_id = $1; `
        
         const firstPsqlQuery = `SELECT * FROM comments WHERE comment_id = $1;`
+        
         return db.query(firstPsqlQuery,[comment_id] )
         .then((results) => {
             if (results.rows.length === 0){
                 return Promise.reject({ status: 404, msg: "Not found" });
             } else { return db.query(psqlDeleteQuery, [comment_id])
-                .then((results) =>{
+                
+            
+            }}).then((results) =>{
     
-                    return results.rows})
-                }
-            })
-        }
+                return results.rows})
+            } 
+        
+    
+        
 
+
+
+                    
+        
+                   
+
+
+ 
+    
+    
             
 
-      exports.selectAllcommnents = ()=> {
-       
-        const psqlQuery =`SELECT * FROM comments
-         RETURNING *;`
-        return db.query(psqlQuery,[])
-        .then((results)=>{
-            return results.rows
-        })
-      }
+     
 
-      exports.checkCommentExists= (comment_id)=>{
-        console.log(comment_id);
-        return db.query( `SELECT * FROM comments WHERE comment_id = $1;`, [comment_id])
-        .then((result)=>{
-            if(result.rowCount === 0){
-                console.log(msg)
-                return Promise.reject({status:404, msg: 'Not found'});
-            } else {
-                return true;
-            }
-        })
-    }
+      
