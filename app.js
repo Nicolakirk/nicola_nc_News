@@ -1,13 +1,14 @@
 const express = require("express");
 const app = express();
 const { getTopics } = require("./controllers/topic_controller");
-const{ getArticles, getAllArticles, patchVotesforComments} = require("./controllers/article_controller")
+const{ getArticles, getAllArticles, getAllartic, patchVotesforComments, queryArticles, check} = require("./controllers/article_controller")
 const { handleCustomErrors, badRoute, handle500Statuses, handlePSQL400s} = require("./controllers/error_controllers");
 
 
 const { getUsers } = require("./controllers/user_controller");
 
 const { getComments, postComments, deleteComments,  } = require("./controllers/comments_controller");
+
 
 
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use(express.json());
  
 
   app.patch('/api/articles/:article_id', patchVotesforComments);
+
 
 
 

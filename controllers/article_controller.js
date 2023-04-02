@@ -1,9 +1,11 @@
-const { selectAllArticles, addVotesbyArticle } = require("../models/article_model");
+const articles = require("../db/data/test-data/articles");
+const { selectAllArticles, addVotesbyArticle, checkTopicExists } = require("../models/article_model");
 const { selectArticles, s } = require("../models/article_model");
 
 
   exports.getArticles = (req, res, next) =>{
     const { article_id } = req.params;
+    
       selectArticles(article_id).then((article) => {
             res.status(200).send({ article });
           })
@@ -13,8 +15,20 @@ const { selectArticles, s } = require("../models/article_model");
         };
 
         exports.getAllArticles = (req, res, next)=>{
-          selectAllArticles().then ((article) =>{
-           res.status(200).send({articles: article});
+
+         const { topic, sort_by, order }  = req.query;
+        
+        const articlesPromises = [selectAllArticles(topic, sort_by, order)];
+       if (topic) {
+        articlesPromises.push(checkTopicExists(topic))
+      }
+   
+        Promise.all(articlesPromises)
+     
+        .then (([articles]) =>{
+         
+         
+           res.status(200).send({ articles} );
           })
           .catch((err)=>{
             next( err);
@@ -33,5 +47,17 @@ const { selectArticles, s } = require("../models/article_model");
 .catch((err)=>{
   next( err);
 });
+        }
 
+        exports.queryArticles = (req,res,next) =>{
+         
+          const { filter } = req.query;
+          console.log (filter);
+       selectArticles(filter)
+        .then((articles)=>{
+            res.status(200).send({articles: articles});
+          })
+          .catch((err)=>{
+            next(err);
+          })
         }

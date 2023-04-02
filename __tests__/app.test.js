@@ -73,9 +73,9 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
        test("status 400 - requests id that doesnt exist with string parameter/wrong data type", () => {
              return request(app)
              .get("/api/articles/doesntexist")
-            expect(400)
+            .expect(400)
             .then(({ body }) => {
-             expect(body).toEqual({ message: "invalid request" });
+             expect(body).toEqual({ msg: "Bad Request" });
               });
 
     });
@@ -92,9 +92,10 @@ const { convertTimestampToDate } = require("../db/seeds/utils.js");
                     expect(articles).toBeInstanceOf(Array);
                     expect(articles).toHaveLength(12);
                     articles.forEach((article) => {
-                       
+                      
                         expect(article).toMatchObject({
                             author: expect.any(String),
+                            title : expect.any(String),
                             article_id:expect.any(Number),
                             topic : expect.any(String),
                             created_at: expect.any(String),
@@ -166,7 +167,7 @@ test("status 200 - returns the comments in  descending order ", () => {
         test("status 404 - responds with an error message when article id doesn't exist", () => {
             return request(app)
                 .get("/api/articles/2002/comments")
-                expect(404)
+                .expect(404)
             .then(({ body }) => {
              expect(body).toEqual({ msg: "Article id not found" });
               });
@@ -395,3 +396,95 @@ describe("PATCH /api/articles/:articleid request", () => {
             })
         })
 
+        describe("get/api/artciles queries", ()=>{
+           
+        
+            test("status 200, get an arrray of articles, sorted by a valid column ", ()=>{
+                return request(app)
+                .get("/api/articles?sort_by=created_at")
+                .expect(200)
+                .then(({body})=>{
+                    const { articles } = body;
+                    expect(articles).toHaveLength(12);
+                    })
+        
+            })
+            test("status 200, get an arrray of articles, sorted by a valid column ", ()=>{
+                return request(app)
+                .get("/api/articles?sort_by=created_at")
+                .expect(200)
+                .then(({body})=>{
+                    const { articles } = body;
+                    expect(articles).toHaveLength(12);
+                    })
+        
+            })
+            test("status 200 - returns articles sorted by column selected ", () => {
+                return request(app)
+                    .get("/api/articles?sort_by=article_id")
+                    .expect(200)
+                    .then(({ body }) => {
+                       const { articles } = body
+                   
+                        expect(articles).toBeSortedBy("article_id", {
+                            descending: true,
+                        })
+                        })
+                    })
+                    
+            
+                    test("status 200 - returns articles sorted by order ", () => {
+                        return request(app)
+                            .get("/api/articles?order=desc")
+                            .expect(200)
+                            .then(({ body }) => {
+                               
+                                const { articles } = body
+                               
+                                expect(articles).toBeSortedBy("created_at", {
+                                    descending: true,
+                                })
+                                })
+                            })
+                    
+                        
+                            test("status 404 - responds with an error message when you enter  an invalid topic column", () => {
+    
+                            return request(app)
+                            .get("/api/articles/?topic=noatopic")
+                            .expect(404)
+                            .then(({ body }) => {
+                                  console.log(body)
+                                 expect(body.msg).toBe("Topic not found");
+                                  })
+                            });
+                           
+                        test("status 404 - responds with an error message when you enter  an invalid order by", () => {
+    
+                        
+                            return request(app)
+                            .get("/api/articles/?order=notvalid")
+                          .expect(400)
+                        .then(({ body }) => {
+                         expect(body.msg).toBe("invalid order query");
+                          })
+                    });
+
+                    test("status 400 - invalid sort query/not a column in db ", () => {
+                        return request(app)
+                            .get("/api/articles?sort_by=notacolumn")
+                            .expect(400)
+                            .then(({ body }) => {
+                                expect(body.msg).toBe("Invalid sort query");
+                            });
+                        })
+                        test("status 200 - queries existing topic, but with no articles associated ", () => {
+                            return request(app)
+                                .get("/api/articles?topic=paper")
+                                .expect(200)
+                                .then(({ body }) => {
+                                    
+                                    expect(body.articles).toEqual([]);
+                                });
+                        });
+        })

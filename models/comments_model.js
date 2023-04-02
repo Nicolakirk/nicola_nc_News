@@ -17,8 +17,8 @@ exports.selectComments = (id) => {
 
 };
 
-exports.checkArticleIdExists= (article_id)=>{
-    return db.query(' SELECT * FROM articles WHERE article_id =$1;', [article_id])
+exports.checkArticleIdExists= (article_id) => {
+    return db.query( `SELECT * FROM articles WHERE article_id =$1;`, [article_id])
     .then((result)=>{
         if(result.rowCount === 0){
             return Promise.reject({status:404, msg: 'Article id not found'});
@@ -32,7 +32,7 @@ exports.checkUserExists= (username)=>{
     return db.query(' SELECT * FROM users WHERE username=$1;', [username])
     .then((result)=>{
         if(result.rowCount === 0){
-            console.log(msg)
+
             return Promise.reject({status:404, msg: 'Invalid username'});
         } else {
             return true;
@@ -73,10 +73,10 @@ exports.insertComments = ( id, commentbody) => {
         WHERE comment_id = $1; `
        
         const firstPsqlQuery = `SELECT * FROM comments WHERE comment_id = $1 ;`
-        console.log(id);
+        
         return db.query(firstPsqlQuery,[id] )
         .then((results) => {
-            console.log(results.rows);
+           
             if (results.rows.length === 0){
                 return Promise.reject({ status: 404, msg: "Not found" });
             } else { return db.query(psqlDeleteQuery, [id])
