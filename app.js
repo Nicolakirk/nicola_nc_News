@@ -8,13 +8,14 @@ const { handleCustomErrors, badRoute, handle500Statuses, handlePSQL400s} = requi
 const { getUsers } = require("./controllers/user_controller");
 
 const { getComments, postComments, deleteComments,  } = require("./controllers/comments_controller");
+const { endpoints } = require("./controllers/api_controller");
 
 
 
 app.use(express.json());
 
 
-
+app.get('/api', endpoints);
 
   app.get('/api/topics', getTopics);
   app.get('/api/articles', getAllArticles);
