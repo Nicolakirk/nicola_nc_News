@@ -1,11 +1,11 @@
-const { selectComments, checkArticleIdExists, insertComments, removeCommentsById } = require("../models/comments_model")
+const { selectComments, checkArticleIdExists, insertComments, removeCommentsById, } = require("../models/comments_model")
 
 
 
 exports.getComments = (req,res, next) =>{
    
     const { article_id } = req.params;
-    const commentsPromises = [selectComments(article_id),checkArticleIdExists ];
+    const commentsPromises = [selectComments(article_id), checkArticleIdExists(article_id) ];
     Promise.all(commentsPromises)
     .then(([comments])=>{
         res.status(200).send({ comments })
