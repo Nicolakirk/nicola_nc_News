@@ -3,6 +3,7 @@ const app = express();
 const { getTopics } = require("./controllers/topic_controller");
 const{ getArticles, getAllArticles, getAllartic, patchVotesforComments, queryArticles, check} = require("./controllers/article_controller")
 const { handleCustomErrors, badRoute, handle500Statuses, handlePSQL400s} = require("./controllers/error_controllers");
+const cors = require('cors');
 
 
 const { getUsers } = require("./controllers/user_controller");
@@ -10,7 +11,7 @@ const { getUsers } = require("./controllers/user_controller");
 const { getComments, postComments, deleteComments,  } = require("./controllers/comments_controller");
 const { endpoints } = require("./controllers/api_controller");
 
-
+app.use(cors());
 
 app.use(express.json());
 
