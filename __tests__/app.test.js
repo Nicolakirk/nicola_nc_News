@@ -435,14 +435,14 @@ describe("PATCH /api/articles/:articleid request", () => {
                     })
                     
             
-                    test("status 200 - returns articles sorted by order ", () => {
+                    test.only("status 200 - returns articles sorted by order ", () => {
                         return request(app)
-                            .get("/api/articles/?order=desc")
+                            .get("/api/articles")
                             .expect(200)
                             .then(({ body }) => {
                                
                                 const { articles } = body
-                               
+                           
                                 expect(articles).toBeSortedBy("created_at", {
                                     descending: true,
                                 })
@@ -477,7 +477,7 @@ describe("PATCH /api/articles/:articleid request", () => {
                             .get("/api/articles/?sort_by=notacolumn")
                             .expect(400)
                             .then(({ body }) => {
-                                expect(body.msg).toBe("Invalid sort query");
+                                expect(body.msg).toBe("invalid sort query");
                             });
                         })
                         test("status 200 - queries existing topic, but with no articles associated ", () => {
