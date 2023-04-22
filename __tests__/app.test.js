@@ -411,7 +411,20 @@ describe("PATCH /api/articles/:articleid request", () => {
             })
             test("status 200, get an arrray of articles, sorted by a valid column ", ()=>{
                 return request(app)
-                .get("/api/articles/?sort_by=created_at")
+                .get("/api/articles/?sort_by=votes")
+                .expect(200)
+                .then(({body})=>{
+                    console.log(body);
+                    const { articles } = body;
+                  
+                    expect(articles).toHaveLength(12);
+                    })
+        
+            })
+
+            test("status 200, get an arrray of articles, sorted by a valid column ", ()=>{
+                return request(app)
+                .get("/api/articles/?sort_by=comment_count")
                 .expect(200)
                 .then(({body})=>{
                     console.log(body);
@@ -435,19 +448,46 @@ describe("PATCH /api/articles/:articleid request", () => {
                     })
                     
             
-                    test.only("status 200 - returns articles sorted by order ", () => {
+                    test("status 200 - returns articles sorted by order ascending ", () => {
                         return request(app)
-                            .get("/api/articles")
+                            .get("/api/articles?order=asc")
                             .expect(200)
                             .then(({ body }) => {
                                
                                 const { articles } = body
                            
                                 expect(articles).toBeSortedBy("created_at", {
-                                    descending: true,
+                                    ascending: true,
                                 })
                                 })
                             })
+                            test("status 200 - returns articles, order by votes,sorted by order ascending ", () => {
+                                return request(app)
+                                    .get("/api/articles?sort_by=votes")
+                                    .expect(200)
+                                    .then(({ body }) => {
+                                       
+                                        const { articles } = body
+                                   
+                                        expect(articles).toBeSortedBy("votes", {
+                                            descending: true,
+                                        })
+                                        })
+                                    })
+
+                            test("status 200 - returns articles sorted by order ", () => {
+                                return request(app)
+                                    .get("/api/articles")
+                                    .expect(200)
+                                    .then(({ body }) => {
+                                       
+                                        const { articles } = body
+                                   
+                                        expect(articles).toBeSortedBy("created_at", {
+                                            descending: true,
+                                        })
+                                        })
+                                    })
                     
                         
                             test("status 404 - responds with an error message when you enter  an invalid topic column", () => {
@@ -477,7 +517,7 @@ describe("PATCH /api/articles/:articleid request", () => {
                             .get("/api/articles/?sort_by=notacolumn")
                             .expect(400)
                             .then(({ body }) => {
-                                expect(body.msg).toBe("invalid sort query");
+                                expect(body.msg).toBe("Invalid sort query");
                             });
                         })
                         test("status 200 - queries existing topic, but with no articles associated ", () => {
