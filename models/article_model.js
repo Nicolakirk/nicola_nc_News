@@ -35,14 +35,14 @@ exports.selectArticles = (id ) => {
       ORDER BY created_at DESC`
  
       const queryPsql = `SELECT * FROM articles WHERE topic = $1`
-      const sortQuery = `SELECT * FROM articles 
-        ORDER BY ${sort_by} DESC`
-   //   const sortQuery =`SELECT articles.* , CAST (COUNT (articles.article_id) AS INT) AS comment_count
-   //   FROM articles 
-   //   LEFT JOIN comments 
-   //  ON comments.article_id = articles.article_id
-   //  GROUP BY articles.article_id
-   //  ORDER BY ${sort_by} DESC`
+      // const sortQuery = `SELECT * FROM articles 
+      //   ORDER BY ${sort_by} DESC`
+     const sortQuery =`SELECT articles.* , CAST (COUNT (articles.article_id) AS INT) AS comment_count
+     FROM articles 
+     LEFT JOIN comments 
+    ON comments.article_id = articles.article_id
+    GROUP BY articles.article_id
+    ORDER BY ${sort_by} ${order} `
  
  
           const orderQuery =` SELECT * FROM articles 
@@ -51,12 +51,12 @@ exports.selectArticles = (id ) => {
           if (!["asc", "desc"].includes(order)) {
            return Promise.reject({ status: 400, msg: "invalid order query" })
           }
-           if ( !["title","topic", "author", "created_at", "article_id" ].includes(sort_by)){
+           if ( !["title","topic", "author", "created_at", "article_id", "votes", "comment_count" ].includes(sort_by)){
              return Promise.reject({status:400, msg :"Invalid sort query"})
          }
           if (!topic  && sort_by === "created_at" && order === "desc"){
            return db.query (queryString, []).then ((result)=>{
-             console.log(result.rows)
+           
                return result.rows
              })
              }
@@ -71,7 +71,7 @@ exports.selectArticles = (id ) => {
   })  
    
    }
-    if (!topic && sort_by !== "created_at"){
+    if (!topic){
      return db.query(sortQuery, []).then((result)=>{
        console.log(result.rows)
        return result.rows
