@@ -50,7 +50,7 @@ view a list of all articles
 view a list of all topics
 view an individual article.
 view an individual article's comments.
-sort articles by: date created, votes
+sort articles by: date created
 post a new comment to an existing article
 delete comments 
 vote on an article and see the change.

@@ -401,7 +401,7 @@ describe("PATCH /api/articles/:articleid request", () => {
         
             test("status 200, get an arrray of articles, sorted by a valid column ", ()=>{
                 return request(app)
-                .get("/api/articles?sort_by=created_at")
+                .get("/api/articles/?sort_by=created_at")
                 .expect(200)
                 .then(({body})=>{
                     const { articles } = body;
@@ -411,17 +411,19 @@ describe("PATCH /api/articles/:articleid request", () => {
             })
             test("status 200, get an arrray of articles, sorted by a valid column ", ()=>{
                 return request(app)
-                .get("/api/articles?sort_by=created_at")
+                .get("/api/articles/?sort_by=created_at")
                 .expect(200)
                 .then(({body})=>{
+                    console.log(body);
                     const { articles } = body;
+                  
                     expect(articles).toHaveLength(12);
                     })
         
             })
             test("status 200 - returns articles sorted by column selected ", () => {
                 return request(app)
-                    .get("/api/articles?sort_by=article_id")
+                    .get("/api/articles/?sort_by=article_id")
                     .expect(200)
                     .then(({ body }) => {
                        const { articles } = body
@@ -435,7 +437,7 @@ describe("PATCH /api/articles/:articleid request", () => {
             
                     test("status 200 - returns articles sorted by order ", () => {
                         return request(app)
-                            .get("/api/articles?order=desc")
+                            .get("/api/articles/?order=desc")
                             .expect(200)
                             .then(({ body }) => {
                                
@@ -472,7 +474,7 @@ describe("PATCH /api/articles/:articleid request", () => {
 
                     test("status 400 - invalid sort query/not a column in db ", () => {
                         return request(app)
-                            .get("/api/articles?sort_by=notacolumn")
+                            .get("/api/articles/?sort_by=notacolumn")
                             .expect(400)
                             .then(({ body }) => {
                                 expect(body.msg).toBe("Invalid sort query");
