@@ -21,14 +21,9 @@ const { selectArticles, s } = require("../models/article_model");
         const articlesPromises = [selectAllArticles(topic, sort_by, order)];
        if (topic) {
         articlesPromises.push(checkTopicExists(topic))
-      }
-   
-        Promise.all(articlesPromises)
-     
-        .then (([articles]) =>{
-         
-      
-           res.status(200).send({ articles} );
+      }Promise.all(articlesPromises)
+      .then (([articles]) =>{
+         res.status(200).send({ articles} );
           })
           .catch((err)=>{
             next( err);

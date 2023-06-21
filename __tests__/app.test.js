@@ -488,6 +488,8 @@ describe("PATCH /api/articles/:articleid request", () => {
                                         })
                                         })
                                     })
+
+                                  
                     
                         
                             test("status 404 - responds with an error message when you enter  an invalid topic column", () => {
@@ -551,5 +553,50 @@ describe("PATCH /api/articles/:articleid request", () => {
                     })
             
                         })
+        
                     })
-                    })
+                })
+        describe("ORDER asc/desc for sort_by queries on /api/articles", () => {
+            it("200: returns array of reviews in ascending order for specified colum", () => {
+              return request(app)
+                .get("/api/articles?sort_by=topic&&order=asc")
+                .expect(200)
+                .then(({ body }) => {
+                  const { articles} = body;
+                  expect(articles).toBeInstanceOf(Array);
+                  expect(articles).toHaveLength(12);
+                  expect(articles).toBeSortedBy("topic", { ascending: true });
+                });
+            });
+        });
+
+        describe("ORDER asc/desc for sort_by queries on /api/articles", () => {
+            it("200: returns array of reviews in ascending order for specified colum", () => {
+              return request(app)
+                .get("/api/articles?sort_by=author&&order=asc")
+                .expect(200)
+                .then(({ body }) => {
+                  const { articles} = body;
+                  expect(articles).toBeInstanceOf(Array);
+                  expect(articles).toHaveLength(12);
+                  expect(articles).toBeSortedBy("author", { ascending: true });
+                });
+            });
+        });
+
+
+        describe("ORDER asc/desc for sort_by queries on /api/articles", () => {
+            it("200: returns array of articles in ascending order for specified column", () => {
+              return request(app)
+                .get("/api/articles?sort_by=author&&order=desc")
+                .expect(200)
+                .then(({ body }) => {
+                  const { articles} = body;
+                  expect(articles).toBeInstanceOf(Array);
+                  expect(articles).toHaveLength(12);
+                  expect(articles).toBeSortedBy("author", { descending: true });
+                });
+            });
+        });
+
+       
